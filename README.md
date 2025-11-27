@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# My Monorepo
+
+A monorepo containing multiple Next.js applications and shared packages.
+
+## Project Structure
+
+The monorepo contains:
+
+- Three frontend sites: `site1`, `site2`, and `site3` 
+- An admin dashboard: `admin`
+- Shared packages:
+  - `ui`: Shared UI components
+  - `shared`: Shared utilities, constants, and API client
+  - `database`: Prisma database access and services
+
+## Data Linking and Sharing Implementation
+
+The system now supports profile sharing between sites. Users can create profiles on their site and choose to share them with other sites. The admin panel provides a central place to manage all profiles and their sharing settings.
+
+### Key Features
+
+1. **Cross-Site Data Sharing**: Profiles created on one site can be shared with other sites
+2. **Central Administration**: Admin panel allows viewing, editing, and managing all profiles and customers
+3. **Seamless Integration**: Each site displays both its own profiles and profiles shared from other sites
+4. **Data Analytics**: Admin dashboard shows statistics about profile distribution and sharing
+
+### Technical Implementation
+
+- **Prisma Schema**: Database schema with relationships between customers, profiles, and sites
+- **Database Services**: Service layer to manage database operations and data sharing logic
+- **Shared API Client**: Common API client used across all sites for consistent data handling
+- **REST API Routes**: API routes in each application for data access and management
 
 ## Getting Started
 
-First, run the development server:
-
+1. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Set up the database:
+```bash
+npx prisma generate --schema=packages/database/prisma/schema.prisma
+npx prisma db push --schema=packages/database/prisma/schema.prisma
+npx prisma db seed --schema=packages/database/prisma/schema.prisma
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Start the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Testing Data Synchronization
 
-## Learn More
+To test the data linking and synchronization between sites:
 
-To learn more about Next.js, take a look at the following resources:
+1. **Create Profiles with Sharing Enabled**:
+   - Go to Site 1 (http://localhost:3001)
+   - Add a new profile and check the boxes to share with Site 2 and/or Site 3
+   - Similarly, create profiles on Site 2 and Site 3 with sharing enabled
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **View Shared Profiles**:
+   - Navigate to each site and verify that profiles shared from other sites appear under "Shared With You" section
+   - Confirm the source site is correctly indicated on the shared profiles
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Admin Management**:
+   - Access the Admin dashboard (http://localhost:3000)
+   - Go to the Profiles page to see all profiles across all sites
+   - Try filtering profiles by site
+   - Use the Data page to view analytics on profile sharing
 
-## Deploy on Vercel
+4. **Profile Editing and Sharing Management**:
+   - From the Admin panel, edit profiles and their sharing settings
+   - Verify that changes are reflected across all relevant sites
+   - Test adding a new profile from Admin and share it with selected sites
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Application URLs
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Admin: [http://localhost:3000](http://localhost:3000)
+- Site 1: [http://localhost:3001](http://localhost:3001)
+- Site 2: [http://localhost:3002](http://localhost:3002)
+- Site 3: [http://localhost:3003](http://localhost:3003)
+# monorepo
